@@ -35,7 +35,7 @@ public class <%= entityName %>Service {
 
         Page<<%= entityName %>> <%= entityVarName %>sPage = <%= entityVarName %>Repository.findAll(pageable);
 
-        List<<%= entityName %>Response> <%= entityVarName %>ResponseList = <%= entityVarName %>Mapper.toResponseList(<%= entityVarName %>sPage.getContent());
+        List<<%= entityName %>Response> <%= entityVarName %>ResponseList = <%= entityVarName %>Mapper.toDto(<%= entityVarName %>sPage.getContent());
 
         return new PagedResult<>(<%= entityVarName %>sPage, <%= entityVarName %>ResponseList);
     }
@@ -51,14 +51,14 @@ public class <%= entityName %>Service {
     }
 
     public Optional<<%= entityName %>Response> find<%= entityName %>ById(Long id) {
-        return <%= entityVarName %>Repository.findById(id).map(<%= entityVarName %>Mapper::toResponse);
+        return <%= entityVarName %>Repository.findById(id).map(<%= entityVarName %>Mapper::toDto);
     }
 
     @Transactional
     public <%= entityName %>Response save<%= entityName %>(<%= entityName %>Request <%= entityVarName %>Request) {
         <%= entityName %> <%= entityVarName %> = <%= entityVarName %>Mapper.toEntity(<%= entityVarName %>Request);
         <%= entityName %> saved<%= entityName %> = <%= entityVarName %>Repository.save(<%= entityVarName %>);
-        return <%= entityVarName %>Mapper.toResponse(saved<%= entityName %>);
+        return <%= entityVarName %>Mapper.toDto(saved<%= entityName %>);
     }
 
     @Transactional
@@ -69,12 +69,12 @@ public class <%= entityName %>Service {
                         .orElseThrow(() -> new <%= entityName %>NotFoundException(id));
 
         // Update the <%= entityVarName %> object with data from <%= entityVarName %>Request
-        <%= entityVarName %>Mapper.map<%= entityName %>WithRequest(<%= entityVarName %>, <%= entityVarName %>Request);
+        <%= entityVarName %>Mapper.partialUpdate(<%= entityVarName %>Request, <%= entityVarName %>);
 
         // Save the updated <%= entityVarName %> object
         <%= entityName %> updated<%= entityName %> = <%= entityVarName %>Repository.save(<%= entityVarName %>);
 
-        return <%= entityVarName %>Mapper.toResponse(updated<%= entityName %>);
+        return <%= entityVarName %>Mapper.toDto(updated<%= entityName %>);
     }
 
     @Transactional

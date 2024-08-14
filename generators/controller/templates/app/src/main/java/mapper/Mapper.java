@@ -4,26 +4,13 @@ import <%= packageName %>.entities.<%= entityName %>;
 import <%= packageName %>.model.request.<%= entityName %>Request;
 import <%= packageName %>.model.response.<%= entityName %>Response;
 import java.util.List;
-import org.springframework.stereotype.Service;
+import org.mapstruct.*;
 
-@Service
-public class <%= entityName %>Mapper {
-    
-    public <%= entityName %> toEntity(<%= entityName %>Request <%= entityVarName %>Request) {
-        <%= entityName %> <%= entityVarName %> = new <%= entityName %>();
-        <%= entityVarName %>.setText(<%= entityVarName %>Request.text());
-        return <%= entityVarName %>;
-    }
-
-    public void map<%= entityName %>WithRequest(<%= entityName %> <%= entityVarName %>, <%= entityName %>Request <%= entityVarName %>Request) {
-        <%= entityVarName %>.setText(<%= entityVarName %>Request.text());
-    }
-
-    public <%= entityName %>Response toResponse(<%= entityName %> <%= entityVarName %>) {
-        return new <%= entityName %>Response(<%= entityVarName %>.getId(), <%= entityVarName %>.getText());
-    }
-
-    public List<<%= entityName %>Response> toResponseList(List<<%= entityName %>> <%= entityVarName %>List) {
-        return <%= entityVarName %>List.stream().map(this::toResponse).toList();
-    }
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
+public interface <%= entityName %>Mapper {
+    <%= entityName %> toEntity(<%= entityName %>Request <%= entityVarName %>Request);
+    <%= entityName %>Response toDto(<%= entityName %> <%= entityVarName %>);
+    List<<%= entityName %>Response> toDto(List<<%= entityName %>> <%= entityVarName %>List);
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    <%= entityName %> partialUpdate(<%= entityName %>Request <%= entityVarName %>Request, @MappingTarget <%= entityName %> <%= entityVarName %>);
 }
