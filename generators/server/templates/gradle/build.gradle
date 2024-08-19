@@ -43,6 +43,8 @@ dependencies {
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     compileOnly "org.projectlombok:lombok"
     annotationProcessor "org.projectlombok:lombok"
+    compileOnly "org.mapstruct:mapstruct:${mapstruct_plugin_version}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct_plugin_version}"
     <%_ if (features.includes("localstack")) { _%>
     implementation "io.awspring.cloud:spring-cloud-aws-starter"
     implementation "io.awspring.cloud:spring-cloud-aws-starter-sqs"
