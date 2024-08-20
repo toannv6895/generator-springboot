@@ -12,8 +12,7 @@ describe('SpringBoot Generator', () => {
                 .inTmpDir(dir => {
                     fse.copySync(path.join(__dirname, '../test/templates/basic-microservice-flyway'), dir);
                 })
-                .withArguments(['Customer'])
-                .withOptions({ 'base-path': '/api/customers', 'formatCode': false })
+                .withOptions({ 'base-path': '/api/customers', 'template-file': path.join(__dirname, '../test/templates/sql/test.sql'), 'formatCode': false })
                 .on('end', done);
         });
 
@@ -33,8 +32,7 @@ describe('SpringBoot Generator', () => {
                 .inTmpDir(dir => {
                     fse.copySync(path.join(__dirname, '../test/templates/basic-microservice-liquibase'), dir);
                 })
-                .withArguments(['Customer'])
-                .withOptions({ 'base-path': '/api/customers', 'formatCode': false })
+                .withOptions({ 'entity-name': 'Customer', 'base-path': '/api/customers', 'template-file': path.join(__dirname, '../test/templates/sql/test.sql'), 'formatCode': false })
                 .on('end', done);
         });
 

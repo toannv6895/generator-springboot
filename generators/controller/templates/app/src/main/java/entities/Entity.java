@@ -21,17 +21,20 @@ import org.hibernate.Hibernate;
 @AllArgsConstructor
 public class <%= entityName %> {
 
-    @Id
-<%_ if (!doesNotSupportDatabaseSequences) { _%>
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-<%_ } _%>
-<%_ if (doesNotSupportDatabaseSequences) { _%>
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-<%_ } _%>
-    private Long id;
-
-    @Column(nullable = false)
-    private String text;
+<% columns.forEach(function(column) { %>
+    <% if (column.fieldName === "id") { %>
+        @Id
+        <% if (!doesNotSupportDatabaseSequences) { %>
+            @GeneratedValue(strategy = GenerationType.SEQUENCE)
+        <% } else { %>
+            @GeneratedValue(strategy = GenerationType.IDENTITY)
+        <% } %>
+        private Long id;
+    <% } else { %>
+        @Column(name = "<%= column.name %>")
+        private <%= column.javaType %> <%= column.fieldName %>;
+    <% } %>
+<% }); %>
 
     @Override
     public boolean equals(Object o) {
